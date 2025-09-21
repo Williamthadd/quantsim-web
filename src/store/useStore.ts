@@ -307,7 +307,7 @@ export const useStore = create<AppState>()(
       },
 
       getPortfolioMetrics: () => {
-        const { transactions, userSession } = get();
+        const { transactions } = get();
         
         // This is a simplified calculation - in a real app you'd want more sophisticated metrics
         const returns = transactions.map(t => t.type === 'BUY' ? -t.total : t.total);

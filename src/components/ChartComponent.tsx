@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useStore, type Stock } from '../store/useStore';
+import { type Stock } from '../store/useStore';
 import { TechnicalAnalysisService, type TechnicalIndicators } from '../services/technicalAnalysis';
 
 interface ChartComponentProps {

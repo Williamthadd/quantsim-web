@@ -9,7 +9,7 @@ const StockSearch: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
-  const { selectStock, setActiveTab, activeTab } = useStore();
+  const { selectStock, setActiveTab } = useStore();
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -36,7 +36,7 @@ const StockSearch: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Search effect with simplified hardcoded stock list
+  // Search effect with local data
   useEffect(() => {
     const searchStocks = async () => {
       if (query.length < 2) {
@@ -45,34 +45,26 @@ const StockSearch: React.FC = () => {
         return;
       }
 
-      console.log(`🔍 Starting search for: "${query}"`);
       setIsLoading(true);
       
       // Clear previous results immediately when query changes
       setResults([]);
       
       try {
-        console.log(`🌐 Fetching results for: "${query}"`);
         const searchResults = await apiService.searchStocks(query);
-        
-        console.log(`📊 Received ${searchResults.length} results for: "${query}"`);
         
         if (searchResults && searchResults.length > 0) {
           setResults(searchResults.slice(0, 8)); // Limit to 8 results
           setShowResults(true);
-          console.log(`✅ Updated UI with ${searchResults.length} results for: "${query}"`);
         } else {
           setResults([]);
           setShowResults(true); // Still show dropdown with "no results" message
-          console.log(`📭 No results found for: "${query}"`);
         }
       } catch (error) {
-        console.error('Search error:', error);
         setResults([]);
         setShowResults(true);
       } finally {
         setIsLoading(false);
-        console.log(`🏁 Search completed for: "${query}"`);
       }
     };
 
@@ -85,8 +77,6 @@ const StockSearch: React.FC = () => {
     const symbol = result.symbol;
     const name = result.name;
     
-    console.log(`🚀 DIRECT NAVIGATION TRIGGERED: ${symbol}`);
-    
     // Create stock object
     const stockData = {
       symbol,
@@ -97,8 +87,6 @@ const StockSearch: React.FC = () => {
       volume: Math.floor(Math.random() * 50000000) + 1000000,
     };
     
-    console.log(`📊 Stock data created:`, stockData);
-    
     // Force immediate store updates
     selectStock(stockData);
     setActiveTab('stock-detail');
@@ -106,35 +94,23 @@ const StockSearch: React.FC = () => {
     // Clear search
     setQuery('');
     setShowResults(false);
-    
-    console.log(`✅ Navigation completed for: ${symbol}`);
   }, [selectStock, setActiveTab]);
-
-  const handleSelectStock = (result: SearchResult) => {
-    console.log(`🎯 handleSelectStock called for: ${result.symbol}`);
-    navigateToStock(result);
-  };
 
   const handleResultClick = useCallback((result: SearchResult, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     
-    console.log(`👆 CLICK HANDLER: ${result.symbol}`);
-    
     // Multiple navigation attempts for reliability
-    console.log(`🚀 Method 1: Direct navigation`);
     navigateToStock(result);
     
     // Backup method with delay
     setTimeout(() => {
-      console.log(`🚀 Method 2: Backup navigation`);
       navigateToStock(result);
     }, 100);
     
     // Emergency fallback
     setTimeout(() => {
-      console.log(`🚀 Method 3: Emergency fallback`);
       const symbol = result.symbol;
       const mockStock = {
         symbol,
@@ -148,7 +124,6 @@ const StockSearch: React.FC = () => {
       setActiveTab('stock-detail');
       setQuery('');
       setShowResults(false);
-      console.log(`❗ Emergency navigation completed for: ${symbol}`);
     }, 300);
   }, [navigateToStock, selectStock, setActiveTab]);
 
@@ -161,11 +136,9 @@ const StockSearch: React.FC = () => {
           value={query}
           onChange={(e) => {
             const newQuery = e.target.value;
-            console.log(`📝 User typing: "${newQuery}" (previous: "${query}")`);
             setQuery(newQuery);
             // Clear results immediately when typing to prevent showing stale results
             if (newQuery !== query) {
-              console.log(`🧹 Clearing results due to query change`);
               setResults([]);
               setShowResults(false);
             }
@@ -204,24 +177,20 @@ const StockSearch: React.FC = () => {
             <div
               key={`${result.symbol}-${index}`}
               onClick={(e) => {
-                console.log(`💆 onClick: ${result.symbol}`);
                 handleResultClick(result, e);
               }}
               onMouseDown={(e) => {
-                console.log(`🔄 onMouseDown: ${result.symbol}`);
                 e.preventDefault();
                 // Immediate backup navigation on mousedown
                 navigateToStock(result);
               }}
               onMouseUp={(e) => {
-                console.log(`🔄 onMouseUp: ${result.symbol}`);
                 e.preventDefault();
                 e.stopPropagation();
                 // Another backup navigation
                 navigateToStock(result);
               }}
-              onTouchStart={(e) => {
-                console.log(`📱 onTouchStart: ${result.symbol}`);
+              onTouchStart={() => {
                 // Mobile support
                 navigateToStock(result);
               }}
