@@ -111,18 +111,18 @@ const Backtest: React.FC = () => {
               <label className="block text-text-secondary text-sm font-semibold mb-2">
                 Symbol
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   value={symbol}
                   onChange={(e) => setSymbol(e.target.value.toUpperCase())}
                   placeholder="Enter symbol"
-                  className="trading-input flex-1"
+                  className="trading-input flex-1 w-full sm:w-auto"
                 />
                 <select
                   value={symbol}
                   onChange={(e) => setSymbol(e.target.value)}
-                  className="trading-input cursor-pointer"
+                  className="trading-input cursor-pointer w-full sm:w-auto sm:min-w-[120px]"
                 >
                   <option value="">Popular</option>
                   {popularSymbols.map(sym => (

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useStore } from '../store/useStore';
+import StockSearch from './StockSearch';
 
 const Sidebar: React.FC = () => {
   const { activeTab, setActiveTab, sidebarOpen, setSidebarOpen, watchlist, removeFromWatchlist } = useStore();
@@ -29,26 +30,54 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Navigation Menu */}
-      <div className="p-2 sm:p-4 space-y-1 sm:space-y-2">
-        {menuItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveTab(item.id)}
-            className={`w-full flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 rounded-lg transition-colors cursor-pointer text-sm sm:text-base ${
-              activeTab === item.id
-                ? 'bg-primary text-white'
-                : 'hover:bg-bg-accent/50 text-text-secondary'
-            }`}
-          >
-            <span className="text-base sm:text-lg">{item.icon}</span>
-            {sidebarOpen && <span className="font-medium">{item.label}</span>}
-          </button>
-        ))}
+      <div className="p-2 sm:p-4">
+        {/* Mobile: Show search when sidebar is open */}
+        {sidebarOpen && (
+          <div className="lg:hidden mb-4">
+            <StockSearch />
+          </div>
+        )}
+        
+        {/* Mobile: Horizontal layout */}
+        <div className="flex lg:hidden space-x-2 overflow-x-auto">
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`flex-shrink-0 flex flex-col items-center space-y-1 p-2 rounded-lg transition-colors cursor-pointer text-xs ${
+                activeTab === item.id
+                  ? 'bg-primary text-white'
+                  : 'hover:bg-bg-accent/50 text-text-secondary'
+              }`}
+            >
+              <span className="text-lg">{item.icon}</span>
+              {sidebarOpen && <span className="font-medium whitespace-nowrap">{item.label}</span>}
+            </button>
+          ))}
+        </div>
+        
+        {/* Desktop: Vertical layout */}
+        <div className="hidden lg:flex lg:flex-col space-y-2">
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors cursor-pointer text-base ${
+                activeTab === item.id
+                  ? 'bg-primary text-white'
+                  : 'hover:bg-bg-accent/50 text-text-secondary'
+              }`}
+            >
+              <span className="text-lg">{item.icon}</span>
+              {sidebarOpen && <span className="font-medium">{item.label}</span>}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Watchlist */}
+      {/* Watchlist - Only show on desktop when sidebar is open */}
       {sidebarOpen && (
-        <div className="flex-1 p-2 sm:p-4 border-t border-bg-accent/50">
+        <div className="hidden lg:block flex-1 p-2 sm:p-4 border-t border-bg-accent/50">
           <h3 className="text-xs sm:text-sm font-semibold text-text-primary mb-2 sm:mb-3">Watchlist</h3>
           <div className="space-y-1 sm:space-y-2">
             {watchlist.length === 0 ? (

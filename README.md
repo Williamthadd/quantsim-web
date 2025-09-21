@@ -15,7 +15,9 @@ QuantSimulate is a comprehensive stock trading simulation platform built with Re
 - **News Simulation**: Sample financial news articles
 - **Portfolio Management**: Track your virtual investments
 - **Backtesting**: Test trading strategies
-- **Responsive Design**: Works on desktop and mobile
+- **Responsive Design**: Optimized mobile layout with horizontal navigation
+- **Professional Footer**: Includes developer attribution
+- **Clean UI**: Invisible scrollbars for seamless visual experience
 
 ## 🏗️ Architecture
 
