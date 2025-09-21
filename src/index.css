@@ -1,0 +1,114 @@
+@import 'tailwindcss';
+
+/* Custom Bloomberg Terminal inspired colors as CSS variables */
+@layer base {
+  :root {
+    --color-bg-primary: #0f172a;
+    --color-bg-secondary: #1e293b;
+    --color-bg-accent: #334155;
+    --color-primary: #3b82f6;
+    --color-success: #22c55e;
+    --color-danger: #ef4444;
+    --color-warning: #f59e0b;
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #cbd5e1;
+    --color-text-muted: #64748b;
+  }
+  
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: 'JetBrains Mono', Monaco, Consolas, monospace;
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    background-color: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    border-radius: 0.5rem;
+  }
+  
+  .glass-panel-strong {
+    background-color: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(51, 65, 85, 0.8);
+    border-radius: 0.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .trading-button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  
+  .trading-button-primary {
+    background-color: var(--color-primary);
+    color: white;
+  }
+  
+  .trading-button-primary:hover {
+    background-color: rgba(59, 130, 246, 0.8);
+  }
+  
+  .trading-button-success {
+    background-color: var(--color-success);
+    color: white;
+  }
+  
+  .trading-button-success:hover {
+    background-color: rgba(34, 197, 94, 0.8);
+  }
+  
+  .trading-button-danger {
+    background-color: var(--color-danger);
+    color: white;
+  }
+  
+  .trading-button-danger:hover {
+    background-color: rgba(239, 68, 68, 0.8);
+  }
+  
+  .trading-input {
+    background-color: rgba(51, 65, 85, 0.5);
+    border: 1px solid var(--color-bg-accent);
+    color: var(--color-text-primary);
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    transition: border-color 0.2s;
+  }
+  
+  .trading-input::placeholder {
+    color: var(--color-text-muted);
+  }
+  
+  .trading-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+  
+  .metric-card {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .price-positive {
+    color: var(--color-success);
+  }
+  
+  .price-negative {
+    color: var(--color-danger);
+  }
+  
+  .price-neutral {
+    color: var(--color-text-secondary);
+  }
+}
